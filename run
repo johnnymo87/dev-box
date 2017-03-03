@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Raise an error if not given $1, which should be a path in the local filesystem
+set -u
+
+# Find IP of VM in order to share system clipboard
+VM_IP=$(ifconfig | grep -A 2 vbox | grep inet | awk '{ print $2 }')
+if [[ -z "${VM_IP// }" ]]; then
+  echo 'Unable to find IP of VM, exiting'
+  exit 1
+fi
+
+NAME=dev-box-$(echo $1 | rev | cut -d / -f 1 | rev)
+RUNNING_CONTAINER=$(docker ps -q --filter "name=$NAME")
+
+if [[ -z $RUNNING_CONTAINER ]]; then
+  docker run -v $1:/project --rm -e DISPLAY=$VM_IP:0 --name=$NAME -ti dev-box
+else
+  docker exec -ti $RUNNING_CONTAINER zsh
+fi

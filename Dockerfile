@@ -1,41 +1,49 @@
-FROM golang:1.5
+FROM debian:jessie
 
 ENV EDITOR vim
 ENV SHELL zsh
+ENV TERM screen-256color-bce
 
-RUN apt-get -q update && \
-  apt-get install --no-install-recommends -y --force-yes -q \
-    ca-certificates \
-    zsh \
-    curl \
-    git \
-    cmake \
-    vim \
-    && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
+RUN apt-get update
+RUN apt-get install -y \
+  build-essential \
+  ca-certificates \
+  cmake \
+  curl \
+  git \
+  jq \
+  libx11-dev \
+  libxtst-dev \
+  libxt-dev \
+  libsm-dev \
+  libxpm-dev \
+  ncurses-dev \
+  python3-dev \
+  silversearcher-ag \
+  zsh
 
-RUN go get github.com/nsf/gocode \
-           golang.org/x/tools/cmd/goimports \
-           github.com/rogpeppe/godef \
-           golang.org/x/tools/cmd/oracle \
-           golang.org/x/tools/cmd/gorename \
-           github.com/golang/lint/golint \
-           github.com/kisielk/errcheck \
-           github.com/jstemmer/gotags \
-           github.com/garyburd/go-explorer/src/getool
+WORKDIR /root
 
-# INSTALL PATHOGEN
-RUN mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-    curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+RUN curl -LO https://github.com/vim/vim/archive/master.tar.gz && \
+  tar -zxvf master.tar.gz && \
+  cd vim-master/src && \
 
-# INSTALL VIM PLUGINS
-RUN git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree && \
-    git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
+  ./configure --prefix=/usr \
+              --with-x \
+              --enable-gui \
+              --enable-python3interp \
+              --with-python3-config-dir=/usr/lib/python3.4/config-3.4m-x86_64-linux-gnu && \
+  make && \
+  make install
 
-ADD vimrc /root/.vimrc
-ADD vimrc.local /root/.vimrc.local
-ADD zshrc /root/.zshrc
+ADD .vim .vim
+RUN python3 .vim/pack/foo/start/YouCompleteMe/install.py
+ADD .vimrc .vimrc
+ADD .gitconfig .gitconfig
+ADD prezto .zprezto
+RUN for rcfile in $(ls .zprezto/runcoms | grep z); do \
+    ln -s ".zprezto/runcoms/$rcfile" ".$rcfile"; \
+  done
 
-RUN mkdir /project
 WORKDIR /project
+CMD zsh
