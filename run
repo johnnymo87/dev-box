@@ -12,9 +12,6 @@ fi
 
 NAME=dev-box-$(echo $1 | rev | cut -d / -f 1 | rev)
 RUNNING_CONTAINER=$(docker ps -q --filter "name=$NAME")
+docker ps -qa --filter "name=$NAME" | xargs docker rm -f
 
-if [[ -z $RUNNING_CONTAINER ]]; then
-  docker run -v $1:/project --rm -e DISPLAY=$VM_IP:0 --name=$NAME -ti dev-box
-else
-  docker exec -ti $RUNNING_CONTAINER zsh
-fi
+docker run -v $1:/project --rm -e DISPLAY=$VM_IP:0 --name=$NAME -ti dev-box

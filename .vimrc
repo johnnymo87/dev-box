@@ -185,21 +185,11 @@ nnoremap <leader>9i :call RunCuke('!', StripLineNumber(@g))<CR>
 nnoremap <silent> <leader>. :NERDTreeFind<CR>:vertical res 30<CR>
 nnoremap <silent> <leader>/ :NERDTreeClose<CR>
 
-" ==== Silver Searcher
-nnoremap ,gg :Ag ""<left>
+" ==== vim-ripgrep
+nnoremap ,gg :Rg ""<left>
 
 " ==== Fuzzy finder CtrlP
 nnoremap <silent> ,t :CtrlP<CR>
-
-" === ShowMarks
-" Don't show any character besides the mark itself
-let g:showmarks_textlower = "\t"
-let g:showmarks_textupper = "\t"
-let g:showmarks_textother = "\t"
-highlight ShowMarksHLl ctermbg=235 guibg=#2c2d27
-highlight ShowMarksHLu ctermbg=235 guibg=#2c2d27
-highlight ShowMarksHLo ctermbg=235 guibg=#2c2d27
-highlight ShowMarksHLm ctermbg=235 guibg=#2c2d27
 
 " associate *.es6 with javascript filetype
 au BufRead,BufNewFile *.es6 set filetype=javascript
