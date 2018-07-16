@@ -13,9 +13,6 @@
 [submodule ".vim/pack/foo/start/syntastic"]
 	path = .vim/pack/foo/start/syntastic
 	url = https://github.com/scrooloose/syntastic.git
-[submodule ".vim/pack/foo/start/YouCompleteMe"]
-	path = .vim/pack/foo/start/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe.git
 [submodule "prezto"]
 	path = prezto
 	url = https://github.com/johnnymo87/prezto.git
