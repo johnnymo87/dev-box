@@ -19,9 +19,6 @@
 [submodule ".vim/pack/foo/start/tabular"]
 	path = .vim/pack/foo/start/tabular
 	url = https://github.com/godlygeek/tabular.git
-[submodule ".vim/pack/foo/start/showmarks"]
-	path = .vim/pack/foo/start/showmarks
-	url = git@github.com:johnnymo87/showmarks.git
 [submodule ".vim/pack/foo/start/vim-ripgrep"]
 	path = .vim/pack/foo/start/vim-ripgrep
 	url = git@github.com:jremmen/vim-ripgrep.git
